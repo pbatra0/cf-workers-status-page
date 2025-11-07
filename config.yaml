@@ -15,25 +15,90 @@ settings:
   dayInHistogramNotOperational: ' incident(s)' # xx incident(s) recorded
 
 monitors:
-  - id: workers-cloudflare-com # unique identifier
-    name: workers.cloudflare.com
-    description: 'You write code. They handle the rest.' # default=empty
-    url: 'https://workers.cloudflare.com/' # URL to fetch
+  - id: piyush-batra-com # unique identifier
+    name: piyushbatra.com
+    description: 'Portfolio' # default=empty
+    url: 'https://piyushbatra.com/' # URL to fetch
     method: GET # default=GET
     expectStatus: 200 # operational status, default=200
     followRedirect: false # should fetch follow redirects, default=false
     linkable: false # allows the title to be a link, default=true
 
-  - id: www-cloudflare-com
-    name: www.cloudflare.com
-    description: 'Built for anything connected to the Internet.'
-    url: 'https://www.cloudflare.com'
+  - id: kaushika-lab-in
+    name: Kaushika Diagnostics Lab
+    description: 'Path Diagnostic Lab'
+    url: 'https://kaushikadiagnosticlab.in/'
     method: GET
     expectStatus: 200
-    linkable: true # allows the title to be a link, default=true
+    linkable: true
 
   - id: blog-cloudflare-com
     name: The Cloudflare Blog
+    description: 'Cloudflare official blog, just for testing'
     url: 'https://blog.cloudflare.com/'
     method: GET
     expectStatus: 200
+
+  - id: batramedicos-piyushbatra-com
+    name: Batra Medicos
+    description: 'Pharmacy storefront'
+    url: 'https://batramedicos.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
+
+  - id: flutter-piyushbatra-com
+    name: Flutter demo portfolio
+    description: 'Flutter showcase app'
+    url: 'https://flutter.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
+
+  - id: watchh-piyushbatra-com
+    name: Media server
+    description: 'Private media server'
+    url: 'https://watchh.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: false
+
+  - id: chat-piyushabtra-com
+    name: Chat service
+    description: 'LLM chat platform'
+    url: 'https://chat.piyushabtra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: false
+
+  - id: pnai-piyushbatra-com
+    name: PNAI portfolio demo
+    description: 'PNAI showcase'
+    url: 'https://pnai.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
+
+  - id: question-pairs-piyushbatra-com
+    name: Question Pairs demo
+    description: 'Question pairs showcase'
+    url: 'https://question-pairs.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
+
+  - id: styletransfer-piyushbatra-com
+    name: Style Transfer demo
+    description: 'Neural style transfer coursework demo'
+    url: 'https://styletransfer.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
+
+  - id: crimeviz-piyushbatra-com
+    name: CrimeViz demo
+    description: 'Canada Crime visualization coursework demo'
+    url: 'https://crimeviz.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
