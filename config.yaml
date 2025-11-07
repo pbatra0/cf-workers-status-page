@@ -22,7 +22,7 @@ monitors:
     method: GET # default=GET
     expectStatus: 200 # operational status, default=200
     followRedirect: false # should fetch follow redirects, default=false
-    linkable: false # allows the title to be a link, default=true
+    linkable: true # allows the title to be a link, default=true
 
   - id: kaushika-lab-in
     name: Kaushika Diagnostics Lab
@@ -58,15 +58,15 @@ monitors:
   - id: watchh-piyushbatra-com
     name: Media server
     description: 'Private media server'
-    url: 'https://watchh.piyushbatra.com/'
+    url: 'https://watchh.piyushbatra.com/web/'
     method: GET
     expectStatus: 200
     linkable: false
 
-  - id: chat-piyushabtra-com
+  - id: chat-piyushbatra-com
     name: Chat service
     description: 'LLM chat platform'
-    url: 'https://chat.piyushabtra.com/'
+    url: 'https://chat.piyushbatra.com/'
     method: GET
     expectStatus: 200
     linkable: false
