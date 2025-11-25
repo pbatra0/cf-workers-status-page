@@ -102,3 +102,11 @@ monitors:
     method: GET
     expectStatus: 200
     linkable: true
+
+  - id: tasks-piyushbatra-com
+    name: Task management portal
+    description: 'Team task tracker'
+    url: 'https://tasks.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
