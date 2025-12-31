@@ -27,7 +27,7 @@ monitors:
   - id: kaushika-lab-in
     name: Kaushika Diagnostics Lab
     description: 'Path Diagnostic Lab'
-    url: 'https://kaushikadiagnosticlab.in/'
+    url: 'https://www.kaushikadiagnosticlab.in/'
     method: GET
     expectStatus: 200
     linkable: true
