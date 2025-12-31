@@ -3,13 +3,15 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - deploy
+  workflow_dispatch:
   repository_dispatch:
   schedule:
     - cron: '0 0 1 * *'
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/deploy'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
