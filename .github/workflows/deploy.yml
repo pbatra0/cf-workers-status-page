@@ -32,18 +32,15 @@ jobs:
           bash ./scripts/prepare-wrangler.sh
         environment: production
         wranglerVersion: '1.19.8'
-        # To enable notifications later, uncomment the secrets block below and
-        # add the corresponding repo secrets under Settings → Secrets and variables → Actions
-        # secrets: |
-        #   SECRET_SLACK_WEBHOOK_URL
+        secrets: |
+          SECRET_SLACK_WEBHOOK_URL
         #   SECRET_TELEGRAM_API_TOKEN
         #   SECRET_TELEGRAM_CHAT_ID
         #   SECRET_DISCORD_WEBHOOK_URL
       env:
         CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-        # Uncomment these when you configure notification secrets in the repo
-        # SECRET_SLACK_WEBHOOK_URL: ${{ secrets.SECRET_SLACK_WEBHOOK_URL }}
+        SECRET_SLACK_WEBHOOK_URL: ${{ secrets.SECRET_SLACK_WEBHOOK_URL || 'default-gh-action-secret' }}
         # SECRET_TELEGRAM_API_TOKEN: ${{ secrets.SECRET_TELEGRAM_API_TOKEN }}
         # SECRET_TELEGRAM_CHAT_ID: ${{ secrets.SECRET_TELEGRAM_CHAT_ID }}
         # SECRET_DISCORD_WEBHOOK_URL: ${{ secrets.SECRET_DISCORD_WEBHOOK_URL }}
