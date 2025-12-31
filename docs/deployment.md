@@ -13,7 +13,7 @@ This project still uses Wrangler v1.x and a KV-backed Flareact site. Use the Git
 
 ### Deploy workflow
 
-Push to `main` or trigger the “Deploy” workflow manually. The action step:
+Push to `deploy` (or trigger the “Deploy” workflow manually). The action step:
 
 - installs Wrangler 1.19.8 inside CI
 - ensures the `KV_STATUS_PAGE` namespace exists (reuses it if already created)
@@ -82,7 +82,7 @@ Common examples:
 | Hourly at minute 0 | `0 * * * *` |
 | Daily at 07:30 UTC | `30 7 * * *` |
 
-No changes are required in `deploy.yml`; the workflow simply publishes whatever cron schedule is present in `wrangler.toml`. After editing the cron array, push to `main` (or rerun the workflow) so Cloudflare applies the new frequency.
+No changes are required in `deploy.yml`; the workflow simply publishes whatever cron schedule is present in `wrangler.toml`. After editing the cron array, push to `deploy` (or rerun the workflow) so Cloudflare applies the new frequency.
 
 #### Impact on usage and the free tier (NOT VERIFIED)
 

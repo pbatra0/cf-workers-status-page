@@ -77,7 +77,7 @@ You can either deploy with **Cloudflare Deploy Button** using GitHub Actions or 
        linkable: false # should the titles be links to the service, default=true
    ```
 
-5. Push to `main` branch to trigger the deployment
+5. Push to `deploy` branch to trigger the deployment
 6. 🎉
 7. _\(optional\)_ Go to [Cloudflare Workers settings](https://dash.cloudflare.com/?to=/workers) and assign custom domain/route
    - e.g. `status-page.eidam.dev/*` _\(make sure you include `/*` as the Worker also serve static files\)_
