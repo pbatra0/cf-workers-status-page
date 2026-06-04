@@ -64,10 +64,16 @@ getKvMonitors(kvMonitorsKey)
       return key.id
     })
 
-    Object.keys(stateMonitors.monitors).map((monitor) => {
+    Object.keys(stateMonitors.monitors).forEach((monitor) => {
       // remove monitor data from state if missing in config
       if (!configMonitors.includes(monitor)) {
         delete stateMonitors.monitors[monitor]
+        return
+      }
+
+      const monitorState = stateMonitors.monitors[monitor]
+      if (!monitorState || !monitorState.checks) {
+        return
       }
 
       // delete dates older than config.settings.daysInHistogram
@@ -76,9 +82,9 @@ getKvMonitors(kvMonitorsKey)
       date.toISOString().split('T')[0]
       const cleanUpDate = date.toISOString().split('T')[0]
 
-      Object.keys(stateMonitors.monitors[monitor].checks).map((checkDay) => {
+      Object.keys(monitorState.checks).forEach((checkDay) => {
         if (checkDay < cleanUpDate) {
-          delete stateMonitors.monitors[monitor].checks[checkDay]
+          delete monitorState.checks[checkDay]
         }
       })
     })
