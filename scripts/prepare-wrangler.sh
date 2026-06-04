@@ -5,7 +5,7 @@ log() {
   echo "[wrangler-prep] $*"
 }
 
-PINNED_WRANGLER_VERSION="1.22.13"
+PINNED_WRANGLER_VERSION="1.21.0"
 KV_TITLE_FRAGMENT="KV_STATUS_PAGE"
 WRANGLER_TOML="wrangler.toml"
 

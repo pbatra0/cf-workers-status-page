@@ -31,7 +31,7 @@ jobs:
         preCommands: |
           bash ./scripts/prepare-wrangler.sh
         environment: production
-        wranglerVersion: '1.22.13'
+        wranglerVersion: '1.21.0'
         secrets: |
           SECRET_SLACK_WEBHOOK_URL
         #   SECRET_TELEGRAM_API_TOKEN
