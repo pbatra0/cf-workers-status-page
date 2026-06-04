@@ -5,24 +5,40 @@ log() {
   echo "[wrangler-prep] $*"
 }
 
-PINNED_WRANGLER_VERSION="1.21.0"
 KV_TITLE_FRAGMENT="KV_STATUS_PAGE"
 WRANGLER_TOML="wrangler.toml"
+CF_API_BASE="https://api.cloudflare.com/client/v4"
 
-log "Ensuring Wrangler v${PINNED_WRANGLER_VERSION} is installed"
-npm uninstall -g @cloudflare/wrangler >/dev/null 2>&1 || true
-npm install -g @cloudflare/wrangler@"${PINNED_WRANGLER_VERSION}"
+require_env() {
+  local name="$1"
+  if [[ -z "${!name:-}" ]]; then
+    echo "Missing required environment variable: ${name}" >&2
+    exit 1
+  fi
+}
 
-log "Ensuring KV namespace '${KV_TITLE_FRAGMENT}' exists"
-if ! wrangler kv:namespace list 2>/dev/null | grep -q "${KV_TITLE_FRAGMENT}"; then
-  wrangler kv:namespace create "${KV_TITLE_FRAGMENT}"
-else
-  log "KV namespace already present, skipping creation"
+cf_api() {
+  curl -fsS \
+    -H "Authorization: Bearer ${CF_API_TOKEN}" \
+    -H "Content-Type: application/json" \
+    "$@"
+}
+
+require_env "CF_ACCOUNT_ID"
+require_env "CF_API_TOKEN"
+
+log "Resolving KV namespace '${KV_TITLE_FRAGMENT}'"
+KV_LIST_JSON="$(cf_api "${CF_API_BASE}/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces?per_page=100")"
+
+KV_NAMESPACE_ID="$(printf '%s' "${KV_LIST_JSON}" \
+  | node -e "const fs=require('fs'); const s=fs.readFileSync(0,'utf8'); const data=JSON.parse(s); const items=Array.isArray(data.result)?data.result:[]; const kv=items.find((item)=>item.title&&item.title.includes('${KV_TITLE_FRAGMENT}')); if(kv&&kv.id){process.stdout.write(kv.id);}")"
+
+if [[ -z "${KV_NAMESPACE_ID}" ]]; then
+  log "KV namespace not found, creating it"
+  KV_CREATE_JSON="$(cf_api -X POST "${CF_API_BASE}/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces" --data "{\"title\":\"${KV_TITLE_FRAGMENT}\"}")"
+  KV_NAMESPACE_ID="$(printf '%s' "${KV_CREATE_JSON}" \
+    | node -e "const fs=require('fs'); const s=fs.readFileSync(0,'utf8'); const data=JSON.parse(s); const id=data&&data.result&&data.result.id; if(id){process.stdout.write(id);} else {process.exit(1);}")"
 fi
-
-log "Resolving KV namespace id"
-KV_NAMESPACE_ID="$(wrangler kv:namespace list 2>/dev/null \
-  | node -e "const fs=require('fs'); const s=fs.readFileSync(0,'utf8'); const m=(s.match(/\\[[\\s\\S]*\\]/)||[]).pop(); const a=m?JSON.parse(m):[]; const kv=a.find(k=>k.title&&k.title.includes('${KV_TITLE_FRAGMENT}')); if(!kv){process.exit(1);} process.stdout.write(kv.id);")"
 
 if [[ -z "${KV_NAMESPACE_ID}" ]]; then
   echo "Failed to resolve KV namespace id for ${KV_TITLE_FRAGMENT}" >&2
@@ -40,24 +56,4 @@ if grep -q '^\[env\.production\]' "${WRANGLER_TOML}"; then
   log "Existing env.production block found, removing to avoid duplicates"
   perl -0pi -e 's/\n\[env\.production\][\s\S]*$//' "${WRANGLER_TOML}"
 fi
-# Wrangler v1 expects a hyphen here (kv-namespaces). Wrangler v2+ uses
-# kv_namespaces (underscore), but this project pins v1 in CI. Use the v1 key.
-printf '\n[env.production]\nkv-namespaces = [{ binding = "KV_STATUS_PAGE", id = "%s" }]\n' "${KV_NAMESPACE_ID}" >> "${WRANGLER_TOML}"
-
-log "Ensuring notification secrets have defaults"
-if [ -z "${SECRET_SLACK_WEBHOOK_URL:-}" ]; then
-  log "SECRET_SLACK_WEBHOOK_URL missing, using placeholder"
-  SECRET_SLACK_WEBHOOK_URL="default-gh-action-secret"
-fi
-if [ -z "${SECRET_TELEGRAM_API_TOKEN:-}" ]; then
-  log "SECRET_TELEGRAM_API_TOKEN missing, using placeholder"
-  SECRET_TELEGRAM_API_TOKEN="default-gh-action-secret"
-fi
-if [ -z "${SECRET_TELEGRAM_CHAT_ID:-}" ]; then
-  log "SECRET_TELEGRAM_CHAT_ID missing, using placeholder"
-  SECRET_TELEGRAM_CHAT_ID="default-gh-action-secret"
-fi
-if [ -z "${SECRET_DISCORD_WEBHOOK_URL:-}" ]; then
-  log "SECRET_DISCORD_WEBHOOK_URL missing, using placeholder"
-  SECRET_DISCORD_WEBHOOK_URL="default-gh-action-secret"
-fi
+printf '\n[env.production]\nkv_namespaces = [{ binding = "KV_STATUS_PAGE", id = "%s" }]\n' "${KV_NAMESPACE_ID}" >> "${WRANGLER_TOML}"

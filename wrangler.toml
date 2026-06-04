@@ -1,16 +1,13 @@
 name = "cf-workers-status-page"
+main = "dist/main.js"
 workers_dev = true
-account_id = ""
-type = "webpack"
-webpack_config = "node_modules/flareact/webpack"
 compatibility_date = "2021-07-23"
 
 [triggers]
 crons = ["*/2 * * * *"]
 
 [site]
-bucket = "out"
-entry-point = "./"
+bucket = "./out"
 
 [observability]
 enabled = false
@@ -27,8 +24,4 @@ enabled = false
 persist = true
 head_sampling_rate = 1
 
-# uncomment and adjust following if you are not using GitHub Actions
-#[env.production]
-#kv-namespaces = [{binding="KV_STATUS_PAGE", id="xxxx", preview_id=""}]
-#zone_id="xxx"
-#route="xxx"
+# GitHub Actions injects the production KV namespace binding during deploy.
