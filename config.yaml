@@ -110,3 +110,11 @@ monitors:
     method: GET
     expectStatus: 200
     linkable: true
+
+  - id: share-piyushbatra-com
+    name: SimpleShare
+    description: 'PDF sharing small project'
+    url: 'https://share.piyushbatra.com/'
+    method: GET
+    expectStatus: 200
+    linkable: true
