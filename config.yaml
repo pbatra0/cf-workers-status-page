@@ -40,7 +40,7 @@ monitors:
     expectStatus: 200
 
   - id: batramedicos-piyushbatra-com
-    name: Batra Medicos
+    name: Batra Medicos (demo)
     description: 'Pharmacy storefront'
     url: 'https://batramedicos.piyushbatra.com/'
     method: GET
